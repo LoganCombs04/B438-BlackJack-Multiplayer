@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckl8250gtmmvr"]
+
+[ext_resource type="Script" uid="uid://b2d0miya44yn8" path="res://Scenes/card.gd" id="2_3p273"]
+
+[node name="Sprite2D" type="Sprite2D"]
+hframes = 11
+vframes = 2
+script = ExtResource("2_3p273")
+
+[node name="SuiteSprite" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+hframes = 11
+vframes = 2
+
+[node name="FaceSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -14)
+hframes = 11
+vframes = 2
