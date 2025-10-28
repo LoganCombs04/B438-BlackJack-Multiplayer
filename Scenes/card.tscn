@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckl8250gtmmvr"]
+
+[ext_resource type="Script" uid="uid://b2d0miya44yn8" path="res://Scripts/card.gd" id="1_0qqmn"]
+[ext_resource type="Texture2D" uid="uid://bx4nvufnqrpi8" path="res://Resources/Textures.png" id="1_wf8id"]
+
+[node name="Card Background" type="Sprite2D"]
+position = Vector2(188, 110)
+texture = ExtResource("1_wf8id")
+hframes = 11
+vframes = 2
+script = ExtResource("1_0qqmn")
+metadata/_edit_group_ = true
+
+[node name="SuiteSprite" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+texture = ExtResource("1_wf8id")
+hframes = 11
+vframes = 2
+
+[node name="FaceSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -14)
+texture = ExtResource("1_wf8id")
+hframes = 11
+vframes = 2
