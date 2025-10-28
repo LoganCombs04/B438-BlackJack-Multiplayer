@@ -13,8 +13,15 @@ config_version=5
 config/name="Multiplayer BlackJack"
 run/main_scene="uid://dk8p1rf8ufqjf"
 config/features=PackedStringArray("4.4", "Mobile")
-config/icon="res://Resources/icon.svg"
+
+[display]
+
+window/size/viewport_width=352
+window/size/viewport_height=224
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
