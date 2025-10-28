@@ -1,12 +1,11 @@
 extends Node
 
-var SpriteSheet: Texture2D
+const DeckScene: PackedScene = preload("res://Scenes/deck.tscn")
+const SpriteSheet: Texture2D = preload("res://Resources/Textures.png")
+var DeckNumber: int = 1
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	print($Deck.Get_Count())
-	SpriteSheet = load("res://Resources/Textures.png")
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+# Creates dependent scenes.
+func _ready() -> void: # Create
+	var NewDeck = DeckScene.instantiate()
+	NewDeck.name = "Deck"
+	self.add_child(NewDeck)
