@@ -26,7 +26,7 @@ func _ready() -> void:
 	# Logic to set a card's value
 	if(face <= 10): # Sets a card's face value to their actual value.
 		value = (face + 1)
-	if((face == 11) or (face == 12) or (face == 13)): # Sets Jack, Queen, and King value to 10.
+	elif((face == 11) or (face == 12) or (face == 13)): # Sets Jack, Queen, and King value to 10.
 		value = 10 
 	else:
 		value = -1 # This is a placeholder for an Ace. This will be chosen by the player in the game's script.

@@ -37,7 +37,7 @@ func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards 
 func Get_Count() -> int:
 	return CardsLeft
 	
-func Get_Random_Card() -> card:
+func Give_Random_Card() -> card:
 	var chosencard = get_child(rng.randi_range(0, (CardsLeft - 1)))
-	remove_child(chosencard.name)
+	remove_child(chosencard)
 	return chosencard
