@@ -1,0 +1,7 @@
+res://Scripts/hand.gd
+res://Scenes/hand.tscn
+res://Scripts/deck.gd
+res://Scenes/card.tscn
+res://Scenes/main.tscn
+res://Scenes/deck.tscn
+res://Scripts/card.gd
