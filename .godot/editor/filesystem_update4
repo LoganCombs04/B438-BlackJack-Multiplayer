@@ -5,3 +5,9 @@ res://Scenes/card.tscn
 res://Scenes/main.tscn
 res://Scenes/deck.tscn
 res://Scripts/card.gd
+res://Scripts/main.gd
+res://Scenes/main_menu.tscn
+res://Scenes/player_menu.tscn
+res://Scripts/main_menu.gd
+res://Scenes/player.tscn
+res://Scenes/player.gd

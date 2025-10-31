@@ -4,14 +4,14 @@ extends Node
 
 var rng = RandomNumberGenerator.new() # RNG generator for selecting an item from the deck.
 var CardsLeft: int = 0
-var DeckNumber: int = 1
 const CardScene: PackedScene = preload("res://Scenes/card.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if (get_tree().get_root().has_node("Main")): # Checks to see if the Main scene is loaded, and pulls the deck number selected by the player.
-		DeckNumber = get_tree().get_root().get_node("Main").DeckNumber
-	Reset_Deck(DeckNumber)
+	#if (get_tree().get_root().has_node("Main")): # Checks to see if the Main scene is loaded, and pulls the deck number selected by the player.
+	#	DeckNumber = get_tree().get_root().get_node("Main").DeckNumber
+	#Reset_Deck(DeckNumber)
+	pass
 	
 func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards previously in the deck.
 	CardsLeft = 0
@@ -21,7 +21,7 @@ func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards 
 		
 	print(CardsLeft) # DEBUG REMOVE LATER
 	print(get_children()) # DEBUG REMOVE LATER
-	for a in range(DeckNumber): # Loops for amount of decks selected.
+	for a in range(decks): # Loops for amount of decks selected.
 		for i in 4:
 			for j in 13:
 				var newcard = CardScene.instantiate()
