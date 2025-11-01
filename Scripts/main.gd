@@ -44,7 +44,9 @@ func Player_Turn(player: String) -> void:
 		var drawncard: card = $Deck.Give_Random_Card()
 		
 		# Case to select an Ace's value
-		if (drawncard.Get_Value() == -1) and (CurrentPlayer.get_Node("Hand").Get_Value() <= 10):
+		if (drawncard.Get_Value() == -1) and (CurrentPlayer.get_node("Hand").Get_Value() <= 10):
+			print("Select the Ace's value, " + CurrentPlayer.name)
+			
 			CurrentPlayer.Set_Ace_Visible(true)
 			
 			var selected_value = await CurrentPlayer.player_action
@@ -57,7 +59,7 @@ func Player_Turn(player: String) -> void:
 			elif (selected_value == "11"):
 				drawncard.Set_Value(11)
 				
-		elif (drawncard.Get_Value() == -1) and (CurrentPlayer.get_Node("Hand").Get_Value() > 10):
+		elif (drawncard.Get_Value() == -1) and (CurrentPlayer.get_node("Hand").Get_Value() > 10):
 			drawncard.Set_Value(1)
 		
 		CurrentPlayer.get_node("Hand").Get_Card(drawncard)
@@ -67,14 +69,11 @@ func Player_Turn(player: String) -> void:
 		CurrentPlayer.Set_Stand(true)
 	
 	if (CurrentPlayer.get_node("Hand").Get_Value() == 21):
-		#Play win sequence
-		pass
+		CurrentPlayer.Set_Stand(true)
+		
 	elif(CurrentPlayer.get_node("Hand").Get_Value() > 21):
-		#if player total is over twentyone, play the lose sequence
-		pass
-	elif(CurrentPlayer.get_node("Hand").Get_Value() < 21):
-		#if player total is under twentyone, finish turn and pass to dealer.
-		pass
+		CurrentPlayer.Set_Broke(true)
+		CurrentPlayer.Set_Stand(true)
 	
 func Dealer_Turn() -> void:
 	pass

@@ -12,3 +12,5 @@ res://Scripts/main_menu.gd
 res://Scenes/player.tscn
 res://Scenes/player.gd
 res://README.md
+res://Scenes/dealer.tscn
+res://Scripts/player.gd

@@ -38,7 +38,14 @@ func Get_Count() -> int:
 	return CardsLeft
 	
 func Give_Random_Card() -> card:
-	var chosencard = get_child(rng.randi_range(0, (CardsLeft - 1)))
-	remove_child(chosencard)
-	CardsLeft -= 1
-	return chosencard
+	if(CardsLeft != 0):
+		var chosencard = get_child(rng.randi_range(0, (CardsLeft - 1)))
+		remove_child(chosencard)
+		CardsLeft -= 1
+		return chosencard
+	else:
+		print("ERROR: PLEASE THROW STOP GAME")
+		var newcard = CardScene.instantiate()
+		newcard.suite = 0
+		newcard.face = 0
+		return newcard

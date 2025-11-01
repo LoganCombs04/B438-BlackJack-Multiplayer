@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ym4yxla0qshv"]
+
+[ext_resource type="Script" uid="uid://cgtkwgjnfjmq2" path="res://Scripts/player.gd" id="1_etcia"]
+[ext_resource type="PackedScene" uid="uid://wqo3iuomn6kn" path="res://Scenes/hand.tscn" id="2_xmjkp"]
+
+[node name="Dealer" type="Node"]
+script = ExtResource("1_etcia")
+
+[node name="Hand" parent="." instance=ExtResource("2_xmjkp")]
