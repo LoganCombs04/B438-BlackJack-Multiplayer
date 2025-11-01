@@ -22,5 +22,21 @@ offset_right = 284.0
 offset_bottom = 202.0
 text = "Stand"
 
+[node name="Ace1" type="Button" parent="."]
+offset_left = 96.0
+offset_top = 132.0
+offset_right = 114.0
+offset_bottom = 163.0
+text = "1"
+
+[node name="Ace11" type="Button" parent="."]
+offset_left = 247.0
+offset_top = 135.0
+offset_right = 274.0
+offset_bottom = 166.0
+text = "11"
+
 [connection signal="pressed" from="Hit" to="." method="_on_hit_pressed"]
 [connection signal="pressed" from="Stand" to="." method="_on_stand_pressed"]
+[connection signal="pressed" from="Ace1" to="." method="_on_ace_1_pressed"]
+[connection signal="pressed" from="Ace11" to="." method="_on_ace_11_pressed"]

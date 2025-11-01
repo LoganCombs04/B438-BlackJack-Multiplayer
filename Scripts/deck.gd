@@ -23,7 +23,7 @@ func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards 
 	print(get_children()) # DEBUG REMOVE LATER
 	for a in range(decks): # Loops for amount of decks selected.
 		for i in 4:
-			for j in 13:
+			for j in 14:
 				var newcard = CardScene.instantiate()
 				newcard.suite = i
 				newcard.face = j
@@ -40,4 +40,5 @@ func Get_Count() -> int:
 func Give_Random_Card() -> card:
 	var chosencard = get_child(rng.randi_range(0, (CardsLeft - 1)))
 	remove_child(chosencard)
+	CardsLeft -= 1
 	return chosencard

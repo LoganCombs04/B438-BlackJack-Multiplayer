@@ -5,10 +5,6 @@ extends Node
 var CardsInHand: int = 0
 var HandValue: int = 0
 var HandNumber: int
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
 	
 func Reset_Hand() -> void:
 	CardsInHand = 0

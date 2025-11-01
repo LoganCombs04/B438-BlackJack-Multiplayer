@@ -11,3 +11,4 @@ res://Scenes/player_menu.tscn
 res://Scripts/main_menu.gd
 res://Scenes/player.tscn
 res://Scenes/player.gd
+res://README.md
