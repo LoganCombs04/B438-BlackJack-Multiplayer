@@ -1,16 +1,4 @@
-res://Scripts/hand.gd
-res://Scenes/hand.tscn
-res://Scripts/deck.gd
-res://Scenes/card.tscn
 res://Scenes/main.tscn
-res://Scenes/deck.tscn
-res://Scripts/card.gd
-res://Scripts/main.gd
-res://Scenes/main_menu.tscn
-res://Scenes/player_menu.tscn
-res://Scripts/main_menu.gd
-res://Scenes/player.tscn
-res://Scenes/player.gd
-res://README.md
 res://Scenes/dealer.tscn
+res://Scenes/player.tscn
 res://Scripts/player.gd
