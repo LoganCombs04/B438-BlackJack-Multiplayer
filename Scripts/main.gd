@@ -8,15 +8,15 @@ var DeckNumber: int = 1
 var GameActive: bool
 var PlayerList = []
 
-# Creates dependent scenes.
-func Ready_Game() -> void:
-	$Deck.Reset_Deck(1)
-	
+func _ready():
 	var NewPlayer = Player.instantiate()
 	NewPlayer.name = "Little John"
 	PlayerList.append(NewPlayer.name)
 	self.add_child(NewPlayer)
-	
+
+# Creates dependent scenes.
+func Ready_Game() -> void:
+	$Deck.Reset_Deck(1)
 	GameActive = true
 	
 	Game_Loop()
@@ -24,9 +24,11 @@ func Ready_Game() -> void:
 func Reset_Game() -> void:
 	for player in PlayerList:
 		var CurrentPlayer = get_node("./" + player)
+		print("Player " + player + ": " + str(CurrentPlayer.get_node("Hand").Get_Value()))
 		CurrentPlayer.reset()
+	print("Dealer: " + str($Dealer.get_node("Hand").Get_Value()))
 	$Dealer.reset()
-	$Deck.Reset_Deck(1)
+	$Deck.reset()
 	
 	$MainMenu.Set_Visibility(true)
 	

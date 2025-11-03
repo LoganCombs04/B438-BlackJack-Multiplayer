@@ -5,3 +5,4 @@ res://Scripts/player.gd
 res://Scenes/dealer.gd
 res://Scripts/main.gd
 res://Scripts/main_menu.gd
+res://Scripts/deck.gd
