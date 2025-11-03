@@ -9,12 +9,25 @@ var broke: bool = false
 func _ready() -> void:
 	Set_Turn_Visible(false)
 	Set_Ace_Visible(false)
+	
+func reset() -> void:
+	$Hand.Reset_Hand()
+	self.stand = false
+	self.broke = false
+	Set_Turn_Visible(false)
+	Set_Ace_Visible(false)
 
 func Get_Stand() -> bool:
-	return self.stand
+	return stand
 	
 func Set_Stand(state: bool) -> void:
 	self.stand = state
+	
+func Get_Broke() -> bool:
+	return broke
+	
+func Set_Broke(state: bool) -> void:
+	self.broke = state
 
 func Set_Turn_Visible(state: bool) -> void:
 	$Hit.visible = state

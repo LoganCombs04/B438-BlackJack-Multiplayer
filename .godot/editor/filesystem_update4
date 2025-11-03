@@ -2,3 +2,6 @@ res://Scenes/main.tscn
 res://Scenes/dealer.tscn
 res://Scenes/player.tscn
 res://Scripts/player.gd
+res://Scenes/dealer.gd
+res://Scripts/main.gd
+res://Scripts/main_menu.gd

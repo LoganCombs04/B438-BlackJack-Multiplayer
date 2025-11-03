@@ -21,6 +21,23 @@ func Ready_Game() -> void:
 	
 	Game_Loop()
 	
+func Reset_Game() -> void:
+	for player in PlayerList:
+		var CurrentPlayer = get_node("./" + player)
+		CurrentPlayer.reset()
+	$Dealer.reset()
+	$Deck.Reset_Deck(1)
+	
+	$MainMenu.Set_Visibility(true)
+	
+func CheckPlayerStand(Players: Array) -> bool:
+	var allstand = true
+
+	for player in Players:
+		if (get_node("./" + player).Get_Stand() == false):
+			allstand = false
+	
+	return allstand
 	
 func Game_Loop() -> void:
 	while(GameActive):
@@ -28,6 +45,10 @@ func Game_Loop() -> void:
 			if (get_node("./" + player).Get_Stand() == false):
 				await Player_Turn(player)
 		Dealer_Turn()
+		
+		if ($Dealer.Get_Stand()) and (CheckPlayerStand(PlayerList) == true):
+			GameActive = false
+			Reset_Game()
 	
 	
 func Player_Turn(player: String) -> void:
@@ -76,4 +97,36 @@ func Player_Turn(player: String) -> void:
 		CurrentPlayer.Set_Stand(true)
 	
 func Dealer_Turn() -> void:
+	print("Time to select an action, Dealer")
+
+	if ($Dealer.get_node("Hand").Get_Value() <= 16):
+		var drawncard: card = $Deck.Give_Random_Card()
+		
+		# Case to select an Ace's value
+		if (drawncard.Get_Value() == -1) and ($Dealer.get_node("Hand").Get_Value() <= 10):
+			drawncard.Set_Value(11)
+				
+		elif (drawncard.Get_Value() == -1) and ($Dealer.get_node("Hand").Get_Value() > 10):
+			drawncard.Set_Value(1)
+		
+		$Dealer.get_node("Hand").Get_Card(drawncard)
+		print($Dealer.get_node("Hand").Get_Value())
+		
+	else:
+		$Dealer.Set_Stand(true)
+	
+	if ($Dealer.get_node("Hand").Get_Value() == 21):
+		$Dealer.Set_Stand(true)
+		
+	elif($Dealer.get_node("Hand").Get_Value() > 21):
+		$Dealer.Set_Broke(true)
+		$Dealer.Set_Stand(true)
+		
+func PlayerWin(playerid: int) -> void:
+	pass
+	
+func DealerWin() -> void:
+	pass
+	
+func Tie() -> void:
 	pass
