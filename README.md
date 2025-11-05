@@ -5,4 +5,4 @@ Download the Godot Engine
 https://godotengine.org/
 
 
-Download the repository as a zip and import it into the Godot Engine.
+Download the repository as a zip file and import it raw into the Godot Engine.
