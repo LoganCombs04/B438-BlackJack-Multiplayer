@@ -38,5 +38,8 @@ func Get_Suite() -> int:
 func Get_Value() -> int:
 	return value
 	
+func Get_Face() -> int:
+	return face
+	
 func Set_Value(newvalue: int) -> void:
 	self.value = newvalue

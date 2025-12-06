@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk8p1rf8ufqjf"]
+[gd_scene load_steps=4 format=3 uid="uid://dk8p1rf8ufqjf"]
 
 [ext_resource type="Script" uid="uid://fva40qau61w6" path="res://Scripts/main.gd" id="1_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://bu6yp1tksisoj" path="res://Scenes/deck.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://dvt70ridgv5ky" path="res://Scenes/main_menu.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://ym4yxla0qshv" path="res://Scenes/dealer.tscn" id="4_jjvhh"]
 
@@ -9,8 +8,6 @@
 script = ExtResource("1_bo1nx")
 
 [node name="MainMenu" parent="." instance=ExtResource("2_bo1nx")]
-
-[node name="Deck" parent="." instance=ExtResource("2_8gbba")]
 
 [node name="Dealer" parent="." instance=ExtResource("4_jjvhh")]
 

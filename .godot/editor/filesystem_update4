@@ -1,8 +1,8 @@
 res://Scenes/main.tscn
-res://Scenes/dealer.tscn
-res://Scenes/player.tscn
-res://Scripts/player.gd
-res://Scenes/dealer.gd
-res://Scripts/main.gd
-res://Scripts/main_menu.gd
+res://Scripts/card.gd
 res://Scripts/deck.gd
+res://Scripts/hand.gd
+res://Scripts/main.gd
+res://Scenes/main_menu.tscn
+res://Scripts/main_menu.gd
+res://Autoload/NetworkManager.gd

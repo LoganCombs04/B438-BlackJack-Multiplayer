@@ -36,12 +36,17 @@ func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards 
 func Get_Count() -> int:
 	return CardsLeft
 	
-func Give_Random_Card() -> card:
+func Give_Random_Card() -> Array:
 	if(CardsLeft != 0):
 		var chosencard = get_child(rng.randi_range(0, (CardsLeft - 1)))
+		var chosensuite = chosencard.Get_Suite()
+		var chosenface = chosencard.Get_Face()
+		var chosenvalue = chosencard.Get_Value()
+		
 		remove_child(chosencard)
 		CardsLeft -= 1
-		return chosencard
+		return [chosensuite, chosenface, chosenvalue]
+		
 	else:
 		print("ERROR: PLEASE THROW STOP GAME")
 		var newcard = CardScene.instantiate()
