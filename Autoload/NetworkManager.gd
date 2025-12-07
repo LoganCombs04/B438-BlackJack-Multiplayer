@@ -42,6 +42,11 @@ func create_game():
 	players[1] = connection_type
 	player_connected.emit(1, connection_type)
 	print("Player has created Lobby! Player id is " + str(multiplayer.get_unique_id()))
+	
+	
+func leave_game():
+	players = {}
+	multiplayer.multiplayer_peer.close()
 
 
 #func remove_multiplayer_peer():

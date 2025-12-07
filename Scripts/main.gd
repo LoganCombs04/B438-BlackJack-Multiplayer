@@ -79,7 +79,9 @@ func Reset_Game() -> void:
 		$Deck.queue_free()
 	
 	$ActionMenu.Reset()
-	$MainMenu.View_In_Lobby()
+	$MainMenu.View_Main_Menu()
+	
+	NetworkManager.leave_game()
 	
 func Game_Loop() -> void:
 	while(GameActive):
