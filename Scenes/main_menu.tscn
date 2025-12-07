@@ -40,6 +40,11 @@ offset_right = 47.0
 offset_bottom = 223.0
 text = "Back"
 
+[node name="Status" type="TextEdit" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+editable = false
+
 [connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="CreateLobby" to="." method="_on_create_lobby_pressed"]
 [connection signal="pressed" from="JoinLobby" to="." method="_on_join_lobby_pressed"]

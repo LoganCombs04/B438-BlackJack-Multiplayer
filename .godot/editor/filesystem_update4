@@ -6,3 +6,8 @@ res://Scripts/main.gd
 res://Scenes/main_menu.tscn
 res://Scripts/main_menu.gd
 res://Autoload/NetworkManager.gd
+res://action_menu.gd
+res://Scripts/player.gd
+res://Scenes/action_menu.tscn
+res://Scenes/player.tscn
+res://Scripts/timer.gd

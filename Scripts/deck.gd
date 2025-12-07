@@ -49,7 +49,4 @@ func Give_Random_Card() -> Array:
 		
 	else:
 		print("ERROR: PLEASE THROW STOP GAME")
-		var newcard = CardScene.instantiate()
-		newcard.suite = 0
-		newcard.face = 0
-		return newcard
+		return [0, 0, 0]
