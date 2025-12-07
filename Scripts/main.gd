@@ -12,6 +12,7 @@ var DeckNumber: int = 1
 var CurrentPlayer: Node
 var GameActive: bool
 var action: String
+var aceAction: int
 
 func _ready():
 	NetworkManager.player_connected.connect(_on_player_connected)
@@ -46,7 +47,7 @@ func Ready_Game():
 		
 	$MainMenu.Set_All_Hidden()
 	
-	if (multiplayer.is_server()):
+	if (multiplayer.get_unique_id() == 1):
 		var Deck = DeckScene.instantiate()
 		Deck.name = "Deck"
 		Deck.Reset_Deck(DeckNumber)
@@ -64,15 +65,17 @@ func Ready_Game():
 func Reset_Game() -> void:
 	print(str(multiplayer.get_unique_id()) + " has reset the game!")
 	
-	for player in NetworkManager.players:
+	var GetPlayers = NetworkManager.players
+	
+	for player in GetPlayers:
 		var CurrentPlayer = get_node(str(player))
-		print("Player " + str(player) + ": " + str(CurrentPlayer.get_node("Hand").Get_Value()))
-		CurrentPlayer.reset()
+		print("Player " + str(player) + ": " + str(get_node(str(player)).get_node("Hand").Get_Value()))
+		CurrentPlayer.queue_free()
 	
-	
-	if (multiplayer.get_unique_id() == 1):
+	if has_node("Dealer"):
 		print("Dealer: " + str(get_node("Dealer").get_node("Hand").Get_Value()))
 		$Dealer.queue_free()
+	if has_node("Deck"):
 		$Deck.queue_free()
 	
 	$ActionMenu.Reset()
@@ -99,7 +102,7 @@ func Game_Loop() -> void:
 			Reset_Game()
 	
 
-@rpc("authority", "call_local", "reliable", 0)
+@rpc("any_peer", "call_local", "reliable", 0)
 func Player_Action() -> void:
 	$ActionMenu.Set_Turn_Visible(true)
 	print(str(multiplayer.get_unique_id()) + " has started their turn!")
@@ -118,10 +121,17 @@ func Player_Action() -> void:
 	
 @rpc("any_peer", "call_local", "reliable", 0)
 func Set_Action(choice: String) -> void:
+	print("action has been set to " + str(choice) + str(multiplayer.get_unique_id()))
 	action = choice
 	
 @rpc("any_peer", "call_local", "reliable", 0)
+func Set_Ace_Action(choice: int) -> void:
+	print("ace action has been set to " + str(choice) + str(multiplayer.get_unique_id()))
+	aceAction = choice
+	
+@rpc("any_peer", "call_local", "reliable", 0)
 func Signal_All(sig: String) -> void:
+	print("signal has been emited: " + sig + " by " + str(multiplayer.get_unique_id()))
 	emit_signal(sig)
 	
 @rpc("any_peer", "call_local", "reliable", 0)
@@ -133,8 +143,14 @@ func Select_Ace() -> void:
 	
 	$ActionMenu.Set_Ace_Visible(false)
 	
-	Set_Action.rpc_id(1, selected_value)
-	Signal_All.rpc("aceselected")
+	print(selected_value)
+	
+	Set_Ace_Action.rpc_id(1, selected_value)
+	
+	if (multiplayer.get_unique_id() != 1):
+		action = ""
+		
+	Signal_All.rpc_id(1, "aceselected")
 
 func Player_Turn(action: String, playerID: int) -> void:
 	
@@ -148,6 +164,9 @@ func Player_Turn(action: String, playerID: int) -> void:
 			Select_Ace.rpc_id(playerID)
 			
 			await aceselected
+			
+			$Timer.start(3)
+			await $Timer.timeout
 			
 			drawncard[2] = int(action)
 			
