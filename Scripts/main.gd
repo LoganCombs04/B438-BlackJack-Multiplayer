@@ -1,6 +1,7 @@
 extends Node
 
 signal turn
+signal aceselected
 
 const DeckScene: PackedScene = preload("res://Scenes/deck.tscn")
 const DealerScene: PackedScene = preload("res://Scenes/dealer.tscn")
@@ -37,7 +38,6 @@ func _on_server_disconnected():
 
 @rpc("any_peer", "call_local", "reliable", 0)
 func Ready_Game():
-	
 	for player in NetworkManager.players:
 			var pobject = PlayerScene.instantiate()
 			pobject.name = str(player)
@@ -70,7 +70,7 @@ func Reset_Game() -> void:
 		CurrentPlayer.reset()
 	
 	
-	if (multiplayer.is_server()):
+	if (multiplayer.get_unique_id() == 1):
 		print("Dealer: " + str(get_node("Dealer").get_node("Hand").Get_Value()))
 		$Dealer.queue_free()
 		$Deck.queue_free()
@@ -82,8 +82,7 @@ func Game_Loop() -> void:
 	while(GameActive):
 		for player in NetworkManager.players:
 			if (get_node(str(player)).Get_Stand() == false):
-				CurrentPlayer = get_node(str(player))
-				print(CurrentPlayer.name + " is now active!")
+				print(str(get_node(str(player))) + " is now active!")
 				Player_Action.rpc_id(player)
 				
 				await turn
@@ -100,7 +99,7 @@ func Game_Loop() -> void:
 			Reset_Game()
 	
 
-@rpc("any_peer", "call_local", "reliable", 0)
+@rpc("authority", "call_local", "reliable", 0)
 func Player_Action() -> void:
 	$ActionMenu.Set_Turn_Visible(true)
 	print(str(multiplayer.get_unique_id()) + " has started their turn!")
@@ -112,7 +111,8 @@ func Player_Action() -> void:
 	
 	Set_Action.rpc_id(1, action)
 	
-	action = ""
+	if (multiplayer.get_unique_id() != 1):
+		action = ""
 	
 	Signal_All.rpc_id(1, "turn")
 	
@@ -133,35 +133,38 @@ func Select_Ace() -> void:
 	
 	$ActionMenu.Set_Ace_Visible(false)
 	
-	Set_Action.rpc(1, selected_value)
+	Set_Action.rpc_id(1, selected_value)
+	Signal_All.rpc("aceselected")
 
 func Player_Turn(action: String, playerID: int) -> void:
+	
+	print("I am " + str(multiplayer.get_unique_id()) +  " calling player turn")
+	
 	if (action == "hit"):
 		var drawncard: Array = $Deck.Give_Random_Card()
 		
 		# Case to select an Ace's value
-		if (drawncard[2] == -1) and (CurrentPlayer.get_node("Hand").Get_Value() <= 10):
+		if (drawncard[2] == -1) and (get_node(str(playerID)).get_node("Hand").Get_Value() <= 10):
 			Select_Ace.rpc_id(playerID)
 			
-			$Timer.start(3)
-			await $Timer.finished
+			await aceselected
 			
 			drawncard[2] = int(action)
 			
-		elif (drawncard[2] == -1) and (CurrentPlayer.get_node("Hand").Get_Value() > 10):
+		elif (drawncard[2] == -1) and (get_node(str(playerID)).get_node("Hand").Get_Value() > 10):
 			drawncard[2] = 1
 			
 		print("Player " + str(playerID) + " has drawn a card value of " + str(drawncard[2]))
 		get_node(str(playerID)).get_node("Hand").Get_Card(drawncard[0], drawncard[1], drawncard[2])
-		GlobalCardUpdate.rpc(multiplayer.get_unique_id(), drawncard)
+		GlobalCardUpdate.rpc(playerID, drawncard)
 		
 	elif (action == "stand"):
 		get_node(str(playerID)).Set_Stand(true)
 	
-	if (CurrentPlayer.get_node("Hand").Get_Value() == 21):
+	if (get_node(str(playerID)).get_node("Hand").Get_Value() == 21):
 		get_node(str(playerID)).Set_Stand(true)
 		
-	elif(CurrentPlayer.get_node("Hand").Get_Value() > 21):
+	elif(get_node(str(playerID)).get_node("Hand").Get_Value() > 21):
 		get_node(str(playerID)).Set_Broke(true)
 		get_node(str(playerID)).Set_Stand(true)
 		
@@ -196,7 +199,7 @@ func Dealer_Turn() -> void:
 		
 	print("Dealer hand value:" + str($Dealer.get_node("Hand").Get_Value()))
 
-@rpc("any_peer", "call_local", "reliable", 0)
+@rpc("any_peer", "call_remote", "reliable", 0)
 func GlobalCardUpdate(playerID: int, newcard: Array) -> void:
 	if (multiplayer.get_unique_id() != playerID):
 		get_node(str(playerID)).get_node("Hand").Get_Card(newcard[0], newcard[1], newcard[2])

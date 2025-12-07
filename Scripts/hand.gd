@@ -1,5 +1,4 @@
 # The deck essentially "holds" all cards, and will be removed when 
-
 extends Node
 
 const CardScene: PackedScene = preload("res://Scenes/card.tscn")

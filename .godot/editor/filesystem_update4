@@ -11,3 +11,4 @@ res://Scripts/player.gd
 res://Scenes/action_menu.tscn
 res://Scenes/player.tscn
 res://Scripts/timer.gd
+res://export_presets.cfg
