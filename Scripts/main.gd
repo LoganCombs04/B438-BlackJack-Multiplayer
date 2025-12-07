@@ -24,7 +24,7 @@ func _ready():
 	$MainMenu/CreateLobby.pressed.connect(NetworkManager.create_game)
 	
 func Join_Game():
-	NetworkManager.join_game()
+	NetworkManager.join_game($MainMenu.get_node("IP").text)
 
 func _on_player_connected(new_player_id, new_player_info):
 	print(str(new_player_id) + " has joined the lobby!")
