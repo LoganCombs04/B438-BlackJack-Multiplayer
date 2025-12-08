@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk8p1rf8ufqjf"]
+[gd_scene load_steps=6 format=3 uid="uid://dk8p1rf8ufqjf"]
 
 [ext_resource type="Script" uid="uid://fva40qau61w6" path="res://Scripts/main.gd" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dvt70ridgv5ky" path="res://Scenes/main_menu.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://bbtrg755awh5c" path="res://Scenes/action_menu.tscn" id="4_kry3j"]
+[ext_resource type="PackedScene" uid="uid://dp6g8dcnrds1q" path="res://Scenes/leaderboard.tscn" id="5_21xkr"]
 [ext_resource type="Script" uid="uid://pmad8n4bq1y2" path="res://Scripts/timer.gd" id="5_kry3j"]
 
 [node name="Main" type="Node"]
@@ -15,5 +16,11 @@ script = ExtResource("1_bo1nx")
 [node name="Timer" type="Timer" parent="."]
 script = ExtResource("5_kry3j")
 
+[node name="DealerTimer" type="Timer" parent="."]
+script = ExtResource("5_kry3j")
+
+[node name="Leaderboard" parent="." instance=ExtResource("5_21xkr")]
+
 [connection signal="start_game" from="MainMenu" to="." method="Ready_Game"]
 [connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
+[connection signal="timeout" from="DealerTimer" to="DealerTimer" method="_on_timeout"]

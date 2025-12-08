@@ -9,7 +9,6 @@ const PlayerScene: PackedScene = preload("res://Scenes/player.tscn")
 const SpriteSheet: Texture2D = preload("res://Resources/Textures.png")
 
 var DeckNumber: int = 1
-var CurrentPlayer: Node
 var GameActive: bool
 var action: String
 var aceAction: int
@@ -28,16 +27,17 @@ func Join_Game():
 
 func _on_player_connected(new_player_id, new_player_info):
 	print(str(new_player_id) + " has joined the lobby!")
-	$MainMenu/Status.text = ""
 
-func _on_player_disconnected(playerID: int):
+func _on_player_disconnected(_playerID: int):
 	print("ouch")
-	Reset_Game.rpc()
+	if ($Timer.is_stopped()):
+		Reset_Game.rpc()
 	
 func _on_server_disconnected():
-	Reset_Game.rpc()
+	if ($Timer.is_stopped()):
+		Reset_Game.rpc()
 
-@rpc("any_peer", "call_local", "reliable", 0)
+@rpc("any_peer", "call_remote", "reliable", 0)
 func Ready_Game():
 	for player in NetworkManager.players:
 			var pobject = PlayerScene.instantiate()
@@ -46,6 +46,8 @@ func Ready_Game():
 			print("Player of ID " + str(player) + " has had their hand created!")
 		
 	$MainMenu.Set_All_Hidden()
+	$ActionMenu.Set_Player_Name(str(multiplayer.get_unique_id()))
+	$ActionMenu.Set_Visible(true)
 	
 	if (multiplayer.get_unique_id() == 1):
 		var Deck = DeckScene.instantiate()
@@ -63,14 +65,28 @@ func Ready_Game():
 
 @rpc("any_peer", "call_local", "reliable", 1)
 func Reset_Game() -> void:
-	print(str(multiplayer.get_unique_id()) + " has reset the game!")
+	var dealervalue = $ActionMenu.dealerscore
+	$ActionMenu.Reset()
 	
 	var GetPlayers = NetworkManager.players
+	var PlayerScores = []
+	var PlayerArray = []
+	
+	for people in GetPlayers:
+		PlayerArray.append(people)
+		PlayerScores.append(get_node(str(people)).get_node("Hand").Get_Value())
+	
+	$Timer.start(10)
+	
+	$Leaderboard.Set_Leaderboard(dealervalue, PlayerArray, PlayerScores)
+	
+	await $Timer.timeout
+	
+	$Leaderboard.Reset()
 	
 	for player in GetPlayers:
-		var CurrentPlayer = get_node(str(player))
 		print("Player " + str(player) + ": " + str(get_node(str(player)).get_node("Hand").Get_Value()))
-		CurrentPlayer.queue_free()
+		get_node(str(player)).queue_free()
 	
 	if has_node("Dealer"):
 		print("Dealer: " + str(get_node("Dealer").get_node("Hand").Get_Value()))
@@ -78,7 +94,6 @@ func Reset_Game() -> void:
 	if has_node("Deck"):
 		$Deck.queue_free()
 	
-	$ActionMenu.Reset()
 	$MainMenu.View_Main_Menu()
 	
 	NetworkManager.leave_game()
@@ -92,27 +107,24 @@ func Game_Loop() -> void:
 				
 				await turn
 				
-				$Timer.start(3)
-				await $Timer.timeout
-				
-				Player_Turn(action, player)
+				await Player_Turn(action, player)
 				
 		Dealer_Turn()
 		
 		if ($Dealer.Get_Stand()) and (CheckPlayerStand() == true):
 			GameActive = false
-			Reset_Game()
+			Reset_Game.rpc()
 	
 
 @rpc("any_peer", "call_local", "reliable", 0)
 func Player_Action() -> void:
-	$ActionMenu.Set_Turn_Visible(true)
+	$ActionMenu.Set_Hit_Disabled(false)
 	print(str(multiplayer.get_unique_id()) + " has started their turn!")
 	print("Time to select an action, " + str(multiplayer.get_unique_id()))
 	
-	action = await $ActionMenu.player_action
-	
-	$ActionMenu.Set_Turn_Visible(false)
+	action = await $ActionMenu.player_choice
+
+	await $ActionMenu.Set_Hit_Disabled(true)
 	
 	Set_Action.rpc_id(1, action)
 	
@@ -128,26 +140,26 @@ func Set_Action(choice: String) -> void:
 	
 @rpc("any_peer", "call_local", "reliable", 0)
 func Set_Ace_Action(choice: int) -> void:
-	print("ace action has been set to " + str(choice) + str(multiplayer.get_unique_id()))
-	aceAction = choice
+	if (multiplayer.is_server()):
+		print("ace action has been set to " + str(choice) + str(multiplayer.get_unique_id()))
+		aceAction = choice
 	
 @rpc("any_peer", "call_local", "reliable", 0)
 func Signal_All(sig: String) -> void:
-	print("signal has been emited: " + sig + " by " + str(multiplayer.get_unique_id()))
-	emit_signal(sig)
+	if (multiplayer.is_server()):
+		print("signal has been emited: " + sig + " by " + str(multiplayer.get_unique_id()))
+		emit_signal(sig)
 	
 @rpc("any_peer", "call_local", "reliable", 0)
 func Select_Ace() -> void:
 	print("Select the Ace's value, " + str(multiplayer.get_unique_id()))
-	$ActionMenu.Set_Ace_Visible(true)
+	$ActionMenu.Set_Ace_Disabled(false)
 	
-	var selected_value = await $ActionMenu.player_action
+	var selected_value = await $ActionMenu.player_choice
 	
-	$ActionMenu.Set_Ace_Visible(false)
+	$ActionMenu.Set_Ace_Disabled(true)
 	
-	print(selected_value)
-	
-	Set_Ace_Action.rpc_id(1, selected_value)
+	Set_Ace_Action.rpc_id(1, int(selected_value))
 	
 	if (multiplayer.get_unique_id() != 1):
 		action = ""
@@ -167,17 +179,14 @@ func Player_Turn(action: String, playerID: int) -> void:
 			
 			await aceselected
 			
-			$Timer.start(3)
-			await $Timer.timeout
-			
-			drawncard[2] = int(action)
+			drawncard[2] = aceAction
 			
 		elif (drawncard[2] == -1) and (get_node(str(playerID)).get_node("Hand").Get_Value() > 10):
 			drawncard[2] = 1
 			
 		print("Player " + str(playerID) + " has drawn a card value of " + str(drawncard[2]))
 		get_node(str(playerID)).get_node("Hand").Get_Card(drawncard[0], drawncard[1], drawncard[2])
-		GlobalCardUpdate.rpc(playerID, drawncard)
+		GlobalCardUpdate.rpc(playerID, drawncard, $Dealer.get_node("Hand").Get_Value())
 		
 	elif (action == "stand"):
 		get_node(str(playerID)).Set_Stand(true)
@@ -219,12 +228,21 @@ func Dealer_Turn() -> void:
 		$Dealer.Set_Stand(true)
 		
 	print("Dealer hand value:" + str($Dealer.get_node("Hand").Get_Value()))
+	
+	DealerUpdate.rpc($Dealer.get_node("Hand").Get_Value())
+	$ActionMenu.Set_Dealer_Value($Dealer.get_node("Hand").Get_Value())
 
-@rpc("any_peer", "call_remote", "reliable", 0)
-func GlobalCardUpdate(playerID: int, newcard: Array) -> void:
-	if (multiplayer.get_unique_id() != playerID):
+@rpc("authority", "call_remote", "reliable", 0)
+func DealerUpdate(dealervalue: int) -> void:
+	$ActionMenu.Set_Dealer_Value(dealervalue)
+
+@rpc("any_peer", "call_local", "reliable", 0)
+func GlobalCardUpdate(playerID: int, newcard: Array, dealervalue: int) -> void:
+	if (multiplayer.get_unique_id() != 1):
 		get_node(str(playerID)).get_node("Hand").Get_Card(newcard[0], newcard[1], newcard[2])
-		
+		print(get_node(str(playerID)).get_node("Hand").Get_Value())
+	$ActionMenu.Set_Hand_Value(get_node(str(multiplayer.get_unique_id())).get_node("Hand").Get_Value())
+	DealerUpdate.rpc(dealervalue)
 	
 func CheckPlayerStand() -> bool:
 	var allstand = true

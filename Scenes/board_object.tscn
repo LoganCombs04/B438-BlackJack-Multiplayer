@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b4ghw7k114cf2"]
+
+[node name="BoardObject" type="Node"]
+
+[node name="Label" type="RichTextLabel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0

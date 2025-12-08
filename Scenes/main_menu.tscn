@@ -1,49 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvt70ridgv5ky"]
+[gd_scene load_steps=3 format=3 uid="uid://dvt70ridgv5ky"]
 
 [ext_resource type="Script" uid="uid://c5ds0w5y4x7ow" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="Texture2D" uid="uid://ie5ei3usoek8" path="res://Resources/MainMenu.png" id="2_48xlc"]
 
 [node name="Main Menu" type="Node"]
 script = ExtResource("1_28flt")
 
 [node name="StartGame" type="Button" parent="."]
+z_index = 1
 offset_left = 128.0
-offset_top = 172.0
+offset_top = 193.0
 offset_right = 224.0
-offset_bottom = 203.0
+offset_bottom = 224.0
 text = "Start Game"
 
 [node name="CreateLobby" type="Button" parent="."]
-offset_left = 24.0
-offset_top = 155.0
-offset_right = 84.0
-offset_bottom = 186.0
+z_index = 1
+offset_left = 30.0
+offset_top = 193.0
+offset_right = 90.0
+offset_bottom = 224.0
 text = "Create"
 
 [node name="JoinLobby" type="Button" parent="."]
-offset_left = 282.0
-offset_top = 159.0
-offset_right = 320.0
-offset_bottom = 190.0
+z_index = 1
+offset_left = 262.0
+offset_top = 193.0
+offset_right = 322.0
+offset_bottom = 224.0
 text = "Join"
 
 [node name="IP" type="TextEdit" parent="."]
-offset_left = 104.0
-offset_top = 81.0
-offset_right = 246.0
-offset_bottom = 124.0
+z_index = 1
+offset_left = 116.0
+offset_top = 120.0
+offset_right = 236.0
+offset_bottom = 155.0
 placeholder_text = "IP: 172.0.0.1"
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
 
 [node name="Back" type="Button" parent="."]
-offset_left = 2.0
-offset_top = 192.0
-offset_right = 47.0
-offset_bottom = 223.0
+z_index = 1
+offset_top = 193.0
+offset_right = 45.0
+offset_bottom = 224.0
 text = "Back"
 
-[node name="Status" type="TextEdit" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
-editable = false
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("2_48xlc")
+centered = false
+metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="CreateLobby" to="." method="_on_create_lobby_pressed"]

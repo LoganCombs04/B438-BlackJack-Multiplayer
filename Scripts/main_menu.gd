@@ -4,6 +4,7 @@ signal start_game
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$Background.texture = load("res://Resources/MainMenu.png")
 	View_Main_Menu()
 
 func _on_start_game_pressed() -> void:
@@ -28,6 +29,7 @@ func View_Main_Menu():
 	$IP.show()
 	$StartGame.hide()
 	$Back.hide()
+	$Background.show()
 
 func _on_create_lobby_pressed() -> void:
 	View_In_Lobby()

@@ -1,5 +1,7 @@
-Timer
-TextEdit
+RichTextLabel
 Node
+Timer
+Sprite2D
+TextEdit
 Button
 Node2D

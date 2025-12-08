@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp6g8dcnrds1q"]
+
+[ext_resource type="Script" uid="uid://dxjkqilui7805" path="res://Scripts/leaderboard.gd" id="1_0uewc"]
+[ext_resource type="Texture2D" uid="uid://dknumfy8d8i5f" path="res://Resources/Leaderboard.png" id="1_oxn4a"]
+
+[node name="Leaderboard" type="Node"]
+script = ExtResource("1_0uewc")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_oxn4a")
+centered = false
+metadata/_edit_lock_ = true

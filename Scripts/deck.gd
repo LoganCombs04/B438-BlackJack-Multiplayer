@@ -27,6 +27,14 @@ func Reset_Deck(decks: int) -> void: # Creates a new Deck, and erases all cards 
 				newcard.suite = i
 				newcard.face = j
 				newcard.visible = false
+				newcard.value = -1
+				if(newcard.face <= 9): # Sets a card's face value to their actual value.
+					newcard.value = (newcard.face + 1)
+				elif((newcard.face == 10) or (newcard.face == 11) or (newcard.face == 12)): # Sets Jack, Queen, and King value to 10.
+					newcard.value = 10 
+				else:
+					newcard.value = -1 # This is a placeholder for an Ace. This will be chosen by the player in the game's script.
+				
 				self.add_child(newcard)
 				CardsLeft += 1
 			
@@ -49,4 +57,4 @@ func Give_Random_Card() -> Array:
 		
 	else:
 		print("ERROR: PLEASE THROW STOP GAME")
-		return [0, 0, 0]
+		return [0, 0, -50]
