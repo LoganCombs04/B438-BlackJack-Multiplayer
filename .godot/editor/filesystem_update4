@@ -1,14 +1,8 @@
-res://Scenes/action_menu.tscn
-res://Scripts/main.gd
 res://Scenes/main.tscn
 res://Scenes/main_menu.tscn
+res://Scenes/action_menu.tscn
 res://Scenes/player.tscn
-res://action_menu.gd
 res://Scenes/card.tscn
-res://Scripts/deck.gd
-res://Scripts/card.gd
-res://Scripts/main_menu.gd
-res://Scripts/timer.gd
 res://Scenes/leaderboard.tscn
-res://Scenes/leaderboard.gd
 res://Scenes/board_object.tscn
+res://Scripts/leaderboard.gd

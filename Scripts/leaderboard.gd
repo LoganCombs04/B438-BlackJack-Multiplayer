@@ -12,7 +12,7 @@ func Set_Visible(state: bool) -> void:
 
 func Set_Leaderboard(dealerScore: int, playerIDs: Array, playerScores: Array) -> void:
 	var i = 0
-	var startingY = 50
+	var startingY = 35
 	
 	$Background.show()
 	
